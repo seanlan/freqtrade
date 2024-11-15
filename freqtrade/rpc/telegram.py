@@ -1010,19 +1010,19 @@ class Telegram(RPCHandler):
         expectancy_ratio = stats["expectancy_ratio"]
 
         if stats["trade_count"] == 0:
-            markdown_msg = f"No trades yet.\n*Bot started:* `{stats['bot_start_date']}`"
+            markdown_msg = f"没有交易.\n*机器人启动时间:* `{stats['bot_start_date']}`"
         else:
             # Message to display
             if stats["closed_trade_count"] > 0:
                 markdown_msg = (
-                    "*ROI:* Closed trades\n"
+                    "*ROI(收益率):* 已结束的交易\n"
                     f"∙ `{fmt_coin(profit_closed_coin, stake_cur)} "
                     f"({profit_closed_ratio_mean:.2%}) "
                     f"({profit_closed_percent} \N{GREEK CAPITAL LETTER SIGMA}%)`\n"
                     f"∙ `{fmt_coin(profit_closed_fiat, fiat_disp_cur)}`\n"
                 )
             else:
-                markdown_msg = "`No closed trade` \n"
+                markdown_msg = "`进行中的交易` \n"
             fiat_all_trades = (
                 f"∙ `{fmt_coin(profit_all_fiat, fiat_disp_cur)}`\n" if fiat_disp_cur else ""
             )
@@ -1032,26 +1032,26 @@ class Telegram(RPCHandler):
                 f"({profit_all_ratio_mean:.2%}) "
                 f"({profit_all_percent} \N{GREEK CAPITAL LETTER SIGMA}%)`\n"
                 f"{fiat_all_trades}"
-                f"*Total Trade Count:* `{trade_count}`\n"
-                f"*Bot started:* `{stats['bot_start_date']}`\n"
+                f"*总交易次数:* `{trade_count}`\n"
+                f"*机器人运行时间:* `{stats['bot_start_date']}`\n"
                 f"*{'First Trade opened' if not timescale else 'Showing Profit since'}:* "
                 f"`{first_trade_date}`\n"
-                f"*Latest Trade opened:* `{latest_trade_date}`\n"
-                f"*Win / Loss:* `{stats['winning_trades']} / {stats['losing_trades']}`\n"
-                f"*Winrate:* `{winrate:.2%}`\n"
-                f"*Expectancy (Ratio):* `{expectancy:.2f} ({expectancy_ratio:.2f})`"
+                f"*最后一次交易时间:* `{latest_trade_date}`\n"
+                f"*赢 / 输:* `{stats['winning_trades']} / {stats['losing_trades']}`\n"
+                f"*胜率:* `{winrate:.2%}`\n"
+                f"*期望值 (胜率):* `{expectancy:.2f} ({expectancy_ratio:.2f})`"
             )
             if stats["closed_trade_count"] > 0:
                 markdown_msg += (
-                    f"\n*Avg. Duration:* `{avg_duration}`\n"
-                    f"*Best Performing:* `{best_pair}: {best_pair_profit_ratio:.2%}`\n"
-                    f"*Trading volume:* `{fmt_coin(stats['trading_volume'], stake_cur)}`\n"
-                    f"*Profit factor:* `{stats['profit_factor']:.2f}`\n"
-                    f"*Max Drawdown:* `{stats['max_drawdown']:.2%} "
+                    f"\n*平均交易时长:* `{avg_duration}`\n"
+                    f"*最佳表现:* `{best_pair}: {best_pair_profit_ratio:.2%}`\n"
+                    f"*交易量:* `{fmt_coin(stats['trading_volume'], stake_cur)}`\n"
+                    f"*利润因子:* `{stats['profit_factor']:.2f}`\n"
+                    f"*最大回撤:* `{stats['max_drawdown']:.2%} "
                     f"({fmt_coin(stats['max_drawdown_abs'], stake_cur)})`\n"
-                    f"    from `{stats['max_drawdown_start']} "
+                    f"    从 `{stats['max_drawdown_start']} "
                     f"({fmt_coin(stats['drawdown_high'], stake_cur)})`\n"
-                    f"    to `{stats['max_drawdown_end']} "
+                    f"    到 `{stats['max_drawdown_end']} "
                     f"({fmt_coin(stats['drawdown_low'], stake_cur)})`\n"
                 )
         await self._send_msg(
@@ -1129,9 +1129,9 @@ class Telegram(RPCHandler):
 
         output = ""
         if self._config["dry_run"]:
-            output += "*Warning:* Simulated balances in Dry Mode.\n"
+            output += "*警告:* 余额为模拟值.\n"
         starting_cap = fmt_coin(result["starting_capital"], self._config["stake_currency"])
-        output += f"Starting capital: `{starting_cap}`"
+        output += f"初始资金: `{starting_cap}`"
         starting_cap_fiat = (
             fmt_coin(result["starting_capital_fiat"], self._config["fiat_display_currency"])
             if result["starting_capital_fiat"] > 0
@@ -1160,11 +1160,11 @@ class Telegram(RPCHandler):
 
                     curr_output = (
                         f"*{curr['currency']}:*\n"
-                        f"\t`Available: {curr['free']:.8f}`\n"
-                        f"\t`Balance: {curr['balance']:.8f}`\n"
-                        f"\t`Pending: {curr['used']:.8f}`\n"
-                        f"\t`Bot Owned: {curr['bot_owned']:.8f}`\n"
-                        f"\t`Est. {curr['stake']}: {est_stake}`\n"
+                        f"\t`可用: {curr['free']:.8f}`\n"
+                        f"\t`余额: {curr['balance']:.8f}`\n"
+                        f"\t`待处理: {curr['used']:.8f}`\n"
+                        f"\t`机器人持有: {curr['bot_owned']:.8f}`\n"
+                        f"\t`估算. {curr['stake']}: {est_stake}`\n"
                     )
 
             elif curr["est_stake"] <= balance_dust_level:
@@ -1194,7 +1194,7 @@ class Telegram(RPCHandler):
             result["total" if full_result else "total_bot"], result["stake"], False
         )
         output += (
-            f"\n*Estimated Value{' (Bot managed assets only)' if not full_result else ''}*:\n"
+            f"\n*估算价值{' (仅限机器人管理的资产)' if not full_result else ''}*:\n"
             f"\t`{result['stake']}: {total_stake}`{stake_improve}\n"
             f"\t`{result['symbol']}: {value}`{fiat_val}\n"
         )

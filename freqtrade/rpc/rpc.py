@@ -338,13 +338,15 @@ class RPC:
                     filled_entries = trade.nr_of_successful_entries
                     detail_trade.append(f"{filled_entries}{max_entry_str}")
                 trades_list.append(detail_trade)
-            profitcol = "Profit"
+            # profitcol = "Profit"
+            profitcol = "利润"
             if self._fiat_converter:
                 profitcol += " (" + fiat_display_currency + ")"
             else:
                 profitcol += " (" + stake_currency + ")"
 
-            columns = ["ID L/S" if nonspot else "ID", "Pair", "Since", profitcol]
+            # columns = ["ID L/S" if nonspot else "ID", "Pair", "Since", profitcol]
+            columns = ["ID L/S" if nonspot else "ID", "交易对", "开始时间", profitcol]
             if self._config.get("position_adjustment_enable", False):
                 columns.append("# Entries")
             return trades_list, columns, fiat_profit_sum
